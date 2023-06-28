@@ -1,36 +1,28 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
 trigger:
 - main
 
-resources:
-- repo: self
+pool:
+  vmImage: ubuntu-latest
 
-variables:
-  tag: '$(Build.BuildId)'
+steps:
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
+- task: DockerInstaller@0
+  displayName: Installing Docker 17
+  inputs:
+    dockerVersion: '17.09.0-ce'
+
 - task: Docker@2
+  displayName: Pushing on Docker Hub
   inputs:
     containerRegistry: 'bhargavd1995-dockerhub'
     repository: 'bhargavd1995/k8s-repository'
-    command: 'build'
+    command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
-    tags: '$(tag)'
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
+    tags: 'latest'
+    addPipelineData: false
+    addBaseImageData: false
