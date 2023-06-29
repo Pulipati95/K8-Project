@@ -27,4 +27,4 @@ stages:
         repository: 'bhargavd1995/k8s-repository'
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
+        tags: '29.0.6'
